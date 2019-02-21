@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void search(int val,int tree[],int t)
+{
+
+   /*while(1)        //Non Recursive version
+   {
+       if(tree[t]==0)
+        {
+            tree[t]=val;   //If node is empty then insert element and after insertion break out loop to main()
+            break;
+        }
+        else if(tree[t]>val)
+            t=(t*2);       //points to left child
+        else if(tree[t]<val)
+            t=(t*2)+1;     //Points to right child
+
+   }
+   */
+
+                      //Recursive Version
+
+                      if(tree[t]==0)                           //If child is empty then ,insert the val
+                          tree[t]=val;
+
+                    else if(val>tree[t])                        //If child is NOT empty then checks the position to insert val
+                            search(val,tree,t=(t*2)+1);      //Points to right child
+                    else if(tree[t]>val)
+                            search(val,tree,t=(t*2));          //points to left child
+
+}
+
+void preorder(int tree[],int t)
+{
+
+    if(tree[t]!=0)
+    {
+        printf("%d(%d)\t",tree[t],t);
+
+        preorder(tree,t*2);     //Recurse Left tree
+        preorder(tree,(t*2)+1);  //Recurse Right tree
+    }
+
+}
+
+void inorder(int tree[],int t)
+{
+    if(tree[t]!=0)
+    {
+        inorder(tree,t*2);
+          printf("%d(%d)\t",tree[t],t);
+         inorder(tree,(t*2)+1);
+
+    }
+}
+
+void postorder(int tree[],int t)
+{
+    if(tree[t]!=0)
+    {
+        postorder(tree,t*2);
+        postorder(tree,(t*2)+1);
+         printf("%d(%d)\t",tree[t],t);
+    }
+}
+
+int main()
+{
+    register int i,t;
+    int n,a[100],tree[250]={0},count;
+
+    printf("Enter the number of elements\n");
+    scanf("%d",&n);
+
+    printf("Enter the elements\n");
+
+    for(i=1;i<=n;i++)         //Array starts from 1
+        scanf("%d",&a[i]);
+
+
+                                //Making Binary tree
+
+      for(i=1;i<=n;i++)
+      {
+
+          search(a[i],tree,1); /*Search begins from root node*/
+      }
+
+      printf("Binary tree search is\n");
+      i=1;
+      count=0;
+     while(count<n)     //For printing BST,while loop end when count=n i.e when all non null elements of tree are printed
+     {
+         if(tree[i]!=0)
+         {
+             printf("%d(%d) \t",tree[i],i);
+             count++;
+         }
+         i++;
+
+    }
+
+    printf("\n\n");
+    printf("Preorder traversal for BST is \n ");
+    preorder(tree,1);                        //Traversals begins from root
+
+    printf("\n\n");
+
+    printf("Inorder traversal for BST is \n");
+    inorder(tree,1);
+    printf("\n\n");
+
+    printf("Postorder traversal for BST is \n");
+    postorder(tree,1);
+    printf("\n\n");
+
+    return 0;
+}
+
+
